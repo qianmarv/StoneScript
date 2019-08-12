@@ -7,7 +7,7 @@ public class LexerRunner {
             Reader fr = new FileReader("./aa.txt");
             Lexer l = new Lexer(fr);
             for (Token t; (t = l.read()) != Token.EOF; ){
-                System.out.println("=> " + t.getText());
+                System.out.println("=> " + t.getLineNumber() + ": " + t.getText());
             }
         } catch (FileNotFoundException e){
             System.out.println("Error");

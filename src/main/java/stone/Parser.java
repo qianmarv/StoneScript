@@ -46,7 +46,7 @@ public class Parser {
             return choose(lexer) != null;
         }
         protected Parser choose(Lexer lexer) throws ParseException{
-            for (Parser p: parses){
+            for (Parser p: parsers){
                 if (p.match(lexer))
                     return p;
             }
@@ -76,7 +76,7 @@ public class Parser {
                     break;
             }
         }
-        protected boolean match(Lexer) lexer throws ParseException{
+        protected boolean match(Lexer lexer) throws ParseException{
             return parser.match(lexer);
         }
     }
@@ -123,8 +123,8 @@ public class Parser {
         }
     }
 
-    protected static class strToken extends AToken {
-        protected strToken(Class<? extends ASTLeaf> type){
+    protected static class StrToken extends AToken {
+        protected StrToken(Class<? extends ASTLeaf> type){
             super(type);
         }
         protected boolean test(Token t){
@@ -133,20 +133,20 @@ public class Parser {
     }
 
     protected static class Leaf extends Element {
-        protected String[] tokends;
+        protected String[] tokens;
         protected Leaf(String[] pat) {
-            tokends = pat;
+            tokens = pat;
         }
-        protected void parse(Lexer lexer, List<ASTree> res) throws ParseEception{
+        protected void parse(Lexer lexer, List<ASTree> res) throws ParseException{
             Token t = lexer.read();
             if (t.isIdentifier())
-                for (String token: tokends)
+                for (String token: tokens)
                     if (token.equals(t.getText())) {
                         find(res, t);
                         return;
                     }
             if (tokens.length > 0)
-                throw new ParseException(tokends[0] + " expected. ", t);
+                throw new ParseException(tokens[0] + " expected. ", t);
             else
                 throw new ParseException(t);
         }
@@ -156,7 +156,7 @@ public class Parser {
         protected boolean match(Lexer lexer) throws ParseException {
             Token t = lexer.peek(0);
             if (t.isIdentifier())
-                for (String token: tokends)
+                for (String token: tokens)
                     if (token.equals(t.getText()))
                         return true;
             return false;
@@ -190,14 +190,14 @@ public class Parser {
     protected static class Expr extends Element {
         protected Factory factory;
         protected Operators ops;
-        protected Parse factor;
+        protected Parser factor;
         protected Expr(Class<? extends ASTree> clazz, Parser exp, Operators map){
             factory = Factory.getForASTList(clazz);
-            ops = map;
-            factory = exp;
+            ops     = map;
+            factor  = exp;
         }
         public void parse(Lexer lexer, List<ASTree> res) throws ParseException {
-            ASTree right = factor.parse(Lexer);
+            ASTree right = factor.parse(lexer);
             Precedence prec;
             while ((prec = nextOperator(lexer)) != null)
                 right = doShift(lexer, right, prec.value);
@@ -318,7 +318,7 @@ public class Parser {
         elements = new ArrayList<Element>();
         return this;
     }
-    public Parser reset(Class<? extends ASTree> claszz){
+    public Parser reset(Class<? extends ASTree> clazz){
         elements = new ArrayList<Element>();
         factory = Factory.getForASTList(clazz);
         return this;

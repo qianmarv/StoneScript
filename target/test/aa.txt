@@ -1,4 +1,4 @@
-while i < 10 {
+while i<10 {
   sum = sum + i
   i = i + 1
 }

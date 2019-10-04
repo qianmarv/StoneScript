@@ -13,7 +13,7 @@ public class BasicParser {
             rule().number(NumberLiteral.class),
             rule().identifier(Name.class, reserved),
             rule().string(StringLiteral.class));
-
+    
     Parser factor = rule().or(rule(NegativeExpr.class).sep("-").ast(primary),
                               primary);
 

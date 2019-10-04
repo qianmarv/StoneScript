@@ -12,7 +12,7 @@ public class ParserRunner {
             BasicParser bp = new BasicParser();
             while (lex.peek(0) != Token.EOF) {
                 ASTree ast = bp.parse(lex);
-                System.out.println("=> " + ast.toString());
+                System.out.println("=> " + ast.toString());                
             }
         } catch (FileNotFoundException e){
             System.out.println("Error");

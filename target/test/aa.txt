@@ -1,3 +1,5 @@
+var1 = "Hello"
+var2 = "World"
 while i < 10 {
   sum = sum + i
   i = i + 1

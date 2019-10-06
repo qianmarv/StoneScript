@@ -374,10 +374,6 @@ public class Parser {
         elements.add(new Repeat(p, false));
         return this;
     }
-    // public Parser expression(Parser subexp, Operators operators){
-    //     elements.add(new Expr(null, subexp, operators));
-    //     return this;
-    // }
     public Parser expression(Class<? extends ASTree> clazz, Parser subexp, Operators operators){
         elements.add(new Expr(clazz, subexp, operators));
         return this;

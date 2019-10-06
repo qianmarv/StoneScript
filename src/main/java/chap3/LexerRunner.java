@@ -8,7 +8,15 @@ public class LexerRunner {
             Reader fr = new FileReader(args[0]);
             Lexer l = new Lexer(fr);
             for (Token t; (t = l.read()) != Token.EOF; ){
-                System.out.println("=> " + t.getLineNumber() + ": " + t.getText());
+                String sType = "Undefined Type";               
+                if(t.isIdentifier()){
+                    sType = "Identifier";
+                }else if(t.isNumber()){
+                    sType = "Number";
+                }else if(t.isString()){
+                    sType = "String";
+                }
+                System.out.println(t.getLineNumber() + " => " + sType + ": " + t.getText());
             }
         } catch (FileNotFoundException e){
             System.out.println("Error");
